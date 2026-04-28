@@ -18,15 +18,15 @@ class Preprocess:
         audio_arr, sample_rate = librosa.load(directoryPath + os.sep + "raw" + os.sep + self.audio_filename,sr=None)
 
         trimmed_audio = silence_trim(audio_arr, top_db=self.top_db)
-        noise_reduced_audio = reduce_noise(trimmed_audio,sample_rate=sample_rate, prop_decrease=self.prop_decrease)
-        normalized_audio = peak_normalization(noise_reduced_audio)     
-        resampled_audio = resample_to_16kHz(normalized_audio, sample_rate=sample_rate)
+        noise_reduced_audio = reduce_noise(trimmed_audio,sample_rate=sample_rate, prop_decrease=self.prop_decrease)    
+        resampled_audio = resample_to_16kHz(noise_reduced_audio, sample_rate=sample_rate)
+        normalized_audio = peak_normalization(resampled_audio) 
 
-        metadata = {"Filename: " : self.audio_filename,
-                    "Duration: " : round(len(resampled_audio)/16000, 4),
-                    "Sample Rate: " : 16000}
+        metadata = {"Filename" : self.audio_filename,
+                    "Duration" : round(len(normalized_audio)/16000, 4),
+                    "Sample Rate" : 16000}
         
-        return resampled_audio, metadata
+        return normalized_audio, metadata
 
 
 if __name__ == "__main__":

@@ -5,10 +5,11 @@ import matplotlib.pyplot as plt
 
 
 def silence_trim(audio_arr: np.ndarray, top_db: int) -> np.ndarray:
-    audio_dB = librosa.amplitude_to_db(np.abs(audio_arr))
-    if (np.all(audio_dB < -top_db)):  # silence check
+    trimmed, tidx = librosa.effects.trim(audio_arr, top_db=top_db)
+
+    if tidx[1] == len(audio_arr) or len(trimmed) == 0:
         return audio_arr
-    return librosa.effects.trim(audio_arr,top_db=top_db)[0]
+    return trimmed 
 
 def reduce_noise(audio_arr: np.ndarray, sample_rate: int, prop_decrease: float) -> np.ndarray:
     clean_audio_arr = np.nan_to_num(audio_arr,nan=0,posinf=0,neginf=0)
@@ -20,10 +21,13 @@ def reduce_noise(audio_arr: np.ndarray, sample_rate: int, prop_decrease: float) 
     return np.nan_to_num(nr_audio_arr,nan=0,posinf=0,neginf=0)
 
 def peak_normalization(audio_arr: np.ndarray) -> np.ndarray:
+    audio_arr = np.nan_to_num(audio_arr,nan=0,posinf=0,neginf=0)
+
     peak = np.max(np.abs(audio_arr))
-    if peak < 1e-4:
+
+    if peak < 1e-4:     # avoid division by 0
         return audio_arr
-    return np.nan_to_num((audio_arr / peak),nan=0,posinf=0,neginf=0)
+    return audio_arr / peak
 
 def resample_to_16kHz(audio_arr: np.ndarray, sample_rate: int) -> np.ndarray:
     return librosa.resample(audio_arr, orig_sr=sample_rate, target_sr=16000)
