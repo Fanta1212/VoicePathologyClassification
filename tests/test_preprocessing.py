@@ -1,6 +1,5 @@
 import numpy as np
 import pytest
-import pathlib
 from src.preprocessing import Preprocess
 
 def test_trim_on_silence_test():
