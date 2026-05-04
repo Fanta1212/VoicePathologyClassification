@@ -30,9 +30,11 @@ def peak_normalization(audio_arr: np.ndarray) -> np.ndarray:
     return audio_arr / peak
 
 def resample_to_16kHz(audio_arr: np.ndarray, sample_rate: int) -> np.ndarray:
+    if sample_rate == 16000:
+        return audio_arr
     return librosa.resample(audio_arr, orig_sr=sample_rate, target_sr=16000)
 
-def waveform(audio_arr: np.ndarray, sample_rate: int):
+def plot_waveform(audio_arr: np.ndarray, sample_rate: int):
     t = np.linspace(0, len(audio_arr)/sample_rate,num=len(audio_arr))
     
     plt.figure(figsize=(15,4))
@@ -42,7 +44,7 @@ def waveform(audio_arr: np.ndarray, sample_rate: int):
     plt.ylabel("Amplitude")
     plt.show()
 
-def spectogram(audio_arr: np.ndarray,sample_rate: int):
+def plot_spectogram(audio_arr: np.ndarray,sample_rate: int):
     audio_stft = librosa.stft(audio_arr)
     audio_db = librosa.amplitude_to_db(audio_stft)
     

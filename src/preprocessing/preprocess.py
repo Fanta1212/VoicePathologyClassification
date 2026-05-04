@@ -3,7 +3,8 @@ from src.utils.utils import *
 import os
 import pathlib
 
-directoryPath = str(pathlib.Path.home()) + os.sep + "VoicePathologyClassification" + os.sep + "VoicePathologyClassification" + os.sep + "data"
+base_dir = pathlib.Path.home() / "VoicePathologyClassification" / "VoicePathologyClassification" / "data"
+raw_dir = base_dir / "raw"
 
 class Preprocess:
     def __init__(self, audio_filename: str, prop_decrease: float, top_db: int):
@@ -13,7 +14,7 @@ class Preprocess:
 
 
     def process(self):
-        audio_arr, sample_rate = librosa.load(directoryPath + os.sep + "raw" + os.sep + self.audio_filename,sr=None)
+        audio_arr, sample_rate = librosa.load(os.path.join(raw_dir, self.audio_filename),sr=None)
 
         trimmed_audio = silence_trim(audio_arr, top_db=self.top_db)
         noise_reduced_audio = reduce_noise(trimmed_audio,sample_rate=sample_rate, prop_decrease=self.prop_decrease)    
