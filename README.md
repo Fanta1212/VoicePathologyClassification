@@ -15,3 +15,15 @@ Each audio is preprocessed in 4 steps: Trimming the audio from the start and the
 ### F0 (Fundamental Frequency)
 Every 20-40 ms of the audio signal is framed and the F0 is calculated with the autocorrelation method in every single frame, this gives the F0 frequency overtime which is the pitch in the frame.
 
+### Jitter
+The change in the fundamental frequency (pitch period) from one cycle to the next.
+
+#### Local Jitter
+Detects very small changes in the pitch period, robustness is low.
+
+#### RAP Jitter
+Is not very sensitive to the small changes in the audio, but more robust than Local Jitter.
+
+#### PPQ5 Jitter
+Very low sensitivity to the changes in the audio signal, but very robust.
+
