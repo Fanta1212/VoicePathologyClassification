@@ -1,5 +1,4 @@
 # VoicePathologyClassification
-Tubitak1005
 
 ### 30.03.2026
 
